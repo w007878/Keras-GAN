@@ -1,13 +1,10 @@
 import keras
-import os
 import cv2
-import argparse
 
-def load_img(path):
-	img = cv2.imread(path, 1)
+from load import load_args
 
-def load_args():
-	parser = argparse.ArgumentParser(description = 'train the GAN model')
 
 if __name__ == '__main__':
-	load_args()	
+	args = load_args()	
+	print args
+
