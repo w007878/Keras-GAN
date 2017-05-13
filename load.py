@@ -3,9 +3,18 @@ import glob
 import argparse
 
 import cv2
+import numpy as np
+
+def read_resize_image(path):
+	img = cv2.imread(path, 1)
+	img = cv2.resize(img, (32, 32))
+	img = numpy.rollaxis(img, 2, 0)
+	return img
 
 def load_img(path):
-	img = cv2.imread(path, 1)
+	path = glob.glob(os.path.join(path, '*.jpg'))
+	print path
+	return np.array([read_resize_image(p) for p in path])
 
 def load_args():
 	parser = argparse.ArgumentParser(description = 'train the GAN model')
