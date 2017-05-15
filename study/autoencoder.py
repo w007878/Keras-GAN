@@ -5,6 +5,7 @@ import os
 from keras.layers import Input, Dense
 from keras.models import Model
 from keras.datasets import mnist
+import matplotlib.pyplot as plt
 
 encoding_dim = 32
 
@@ -40,6 +41,28 @@ print np.prod(x_train.shape)
 
 
 autoencoder.fit(x_train, x_train, epochs = 50, batch_size = 32, shuffle = True, validation_data = (x_test, x_test))
+
+encoded_imgs = encoder.predict(x_test)
+decoded_imgs = decoder.predict(encoded_imgs)
+
+n = 20
+plt.figure(figsize = (40, 8))
+
+for i in range(n):
+	ax = plt.subplot(2, n, i + 1)
+	plt.imshow(x_test[i].reshape(28, 28))
+	plt.gray()
+	ax.get_xaxis().set_visible(False)
+	ax.get_yaxis().set_visible(False)
+
+	ax = plt.subplot(2, n, i + 1 + n)
+	plt.imshow(decoded_imgs[i].reshape(28, 28))
+	plt.gray()
+	ax.get_xaxis().set_visible(False)
+	ax.get_yaxis().set_visible(False)
+
+plt.show()
+
 print encoding_dim 
 
 
