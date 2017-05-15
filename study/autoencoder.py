@@ -1,13 +1,14 @@
 import keras
 import numpy as np
 import os
+import cv2
 
 from keras.layers import Input, Dense
 from keras.models import Model
 from keras.datasets import mnist
 import matplotlib.pyplot as plt
 
-encoding_dim = 256
+encoding_dim = 232
 
 input_img = Input(shape = (784, ))
 
@@ -43,6 +44,11 @@ encoded_imgs = encoder.predict(x_test)
 decoded_imgs = decoder.predict(encoded_imgs)
 
 n = 20
+
+for i in range(n):
+    cv2.imwrite('result/d' + str(i) + '.png', (255 * decoded_imgs[i].reshape(28, 28) * 255).astype('int'))
+    cv2.imwrite('result/e' + str(i) + '.png', (255 * x_test[i].reshape(28, 28)).astype('int'))
+'''
 plt.figure(figsize = (40, 8))
 
 for i in range(n):
@@ -61,6 +67,6 @@ for i in range(n):
 plt.show()
 
 print encoding_dim 
-
+'''
 
 
