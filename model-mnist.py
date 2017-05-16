@@ -103,6 +103,19 @@ def train(epochs, batch_size):
 		discriminator.save_weights('discriminator_weights', True)
 
 def generate(img_num):
+	generator = generator_model()
+	generator.compile(optimizer = 'sgd', loss = 'binary_crossentropy')
+	generator.load_weights('generator_weights')
+	
+	noise = np.array([generate_noise(100) for n in range(img_num)])
+
+	generated_img = [np.int(255 * img.reshape(28, 28)) for img in generator.predict(noise)]
+
+	if not os.path.exists('results'):
+		os.mkdir('results')
+
+	for index, img in enumerate(generated_img):
+		cv2.imwrite('results/' + '{}.jpg'.format(index), img)
 
 	return generator()
 
