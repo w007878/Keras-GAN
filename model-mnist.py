@@ -106,16 +106,29 @@ def generate(img_num):
 	generator = generator_model()
 	generator.compile(optimizer = 'sgd', loss = 'binary_crossentropy')
 	generator.load_weights('generator_weights')
-	
-	noise = np.array([generate_noise(100) for n in range(img_num)])
-
-	generated_img = [(255 * img.reshape(28, 28)).astype('int') for img in generator.predict(noise)]
 
 	if not os.path.exists('results'):
 		os.mkdir('results')
 
-	for index, img in enumerate(generated_img):
-		cv2.imwrite('results/' + '{}.jpg'.format(index), img)
+	
+	generated_img = []
+	for i in range(img_num):
+		noise = np.array([generate_noise(100) for n in range(img_num)])
+
+		tmp_img  = np.concatenate([(255 * img.reshape(28, 28)).astype('int') for img in generator.predict(noise)])
+
+		if len(generated_img) == 0:
+			generated_img = tmp_img
+		else:
+			generated_img = np.concatenate([generated_img, tmp_img], 1)
+
+		print generated_img.shape
+
+#	tmp_img = generated_img.reshape((28, len(generated_img) * 28))
+		cv2.imwrite('results/results_large.jpg', generated_img)
+
+#	for index, img in enumerate(generated_img):
+#		cv2.imwrite('results/' + '{}.jpg'.format(index), img)
 
 
 if __name__ == '__main__':
