@@ -109,7 +109,7 @@ def generate(img_num):
 	
 	noise = np.array([generate_noise(100) for n in range(img_num)])
 
-	generated_img = [np.int(255 * img.reshape(28, 28)) for img in generator.predict(noise)]
+	generated_img = [(255 * img.reshape(28, 28)).astype('int') for img in generator.predict(noise)]
 
 	if not os.path.exists('results'):
 		os.mkdir('results')
@@ -117,7 +117,6 @@ def generate(img_num):
 	for index, img in enumerate(generated_img):
 		cv2.imwrite('results/' + '{}.jpg'.format(index), img)
 
-	return generator()
 
 if __name__ == '__main__':
 	args = load_args()
